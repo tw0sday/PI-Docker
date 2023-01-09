@@ -5,34 +5,29 @@
 
   pre_tasks:
     - name: Add basic configuration
+      become: true
       shell: |
         set -ex
         echo 'pi.local' > /etc/hostname
         localectl set-locale LANG=en_US.UTF-8
         ln -sfn /usr/share/zoneinfo/UTC /etc/localtime
     - name: Install epel (Extra Packages for Enterprise Linux)
+      become: true
       shell: |
         set -ex
         apt-get update
         apt-get dist-upgrade -y
-    - name: Install pip3
-      package:
-        name: "python3-pip"
-        state: present
-    - name: Upgrade pip
-      pip:
-        name: pip
-        extra_args: --upgrade
 
   tasks:
-    - name: Disable ssh password login
-      lineinfile:
-        dest: /etc/ssh/sshd_config
-        line: "{{ lookup('file', '~/.ssh/id_ssh_ed25519_' + item + '_' + inventory_hostname + '.pub') }}"
+    - name: Set authorized keys for ansible controller
+      become: true
+      authorized_key:
+        user: "{{ item }}"
         state: present
-      with_items: "{{ user }}"
-
+        key: "{{ lookup('file', '~/.ssh/id_ssh_ed25519_' + item + '_' + inventory_hostname + '.pub') }}"
+      with_items: "{{ users }}"
     - name: Disable ssh password login
+      become: true
       lineinfile:
         dest: /etc/ssh/sshd_config
         regexp: "^PasswordAuthentication"
@@ -42,6 +37,7 @@
 
   post_tasks:
     - name: Restart sshd
+      become: true
       systemd:
         name: sshd
         state: restarted

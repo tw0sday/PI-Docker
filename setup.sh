@@ -277,9 +277,9 @@ main(){
 
     export ANSIBLE_HOST_KEY_CHECKING=False
     
-    #for i in "${_hostsArray[@]}"; do
-    #    python3 -m ansible playbook -i ${i}, -u root -k playbooks/remote_setup.yml --ask-vault-pass
-    #done
+    for i in "${_hostsArray[@]}"; do
+        python3 -m ansible playbook -i ${i}, -u pirate -k playbooks/remote_setup.yml --ask-vault-pass
+    done
     
     return $?
 }

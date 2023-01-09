@@ -229,6 +229,7 @@ exit_handler(){
         echo "+ Thanks for using GINAvbs"
         echo -e "+"
         echo -e "${COOL_LINE}"
+        echo -e "${COL_NC}"
         
         return ${error_code};
     fi
@@ -239,7 +240,8 @@ exit_handler(){
     error_handler ${error_code}
     echo -e "+"
     echo -e "${COOL_LINE}"
-    
+    echo -e "${COL_NC}"
+
     exit ${error_code}
 } 2>/dev/null
 

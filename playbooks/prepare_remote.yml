@@ -4,6 +4,13 @@
     - ../vault.yml
 
   pre_tasks:
+    - name: Add valid DNS server
+      become: true
+      lineinfile:
+        dest: /etc/resolv.conf
+        regexp: "^nameserver"
+        line: "nameserver 1.1.1.1"
+        state: present
     - name: Add basic configuration
       become: true
       shell: |

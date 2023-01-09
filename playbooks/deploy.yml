@@ -1,0 +1,14 @@
+---
+- name: Deploy container with docker
+  hosts: all
+  vars_files:
+    - ../vault.yml
+
+  tasks:
+    - name: Container present
+      community.docker.docker_container:
+        name: mycontainer
+        state: present
+        image: ubuntu:latest
+        command: sleep infinity
+

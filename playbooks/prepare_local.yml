@@ -1,5 +1,7 @@
 ---
 - hosts: localhost
+  vars_files:
+    - ../vault.yml
   vars:
     - hosts: "{{ lookup('env', 'SETUP_HOSTS', default=Undefined) }}"
 

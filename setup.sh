@@ -273,7 +273,7 @@ main(){
     _hosts="${_hosts// /}"
     _hostsArray=(${_hosts//,/ })
     
-    python3 -m ansible playbook -i , -e "hosts=${_hosts}" playbooks/local_setup.yml
+    python3 -m ansible playbook -i , -e "hosts=${_hosts}" playbooks/local_setup.yml --ask-vault-pass
 
     export ANSIBLE_HOST_KEY_CHECKING=False
     

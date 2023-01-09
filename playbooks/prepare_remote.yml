@@ -1,7 +1,7 @@
 ---
 - hosts: all
   vars_files:
-    - ~/vault.yml
+    - ../vault.yml
 
   pre_tasks:
     - name: Add basic configuration
@@ -15,8 +15,6 @@
         set -ex
         apt-get update
         apt-get dist-upgrade -y
-
-  tasks:
     - name: Install pip3
       package:
         name: "python3-pip"
@@ -25,15 +23,22 @@
       pip:
         name: pip
         extra_args: --upgrade
-    - name: Install cryptography python package
-      pip:
-        name: cryptography
+
+  tasks:
+    - name: Disable ssh password login
+      lineinfile:
+        dest: /etc/ssh/sshd_config
+        line: "{{ lookup('file', '~/.ssh/id_ssh_ed25519_' + item + '_' + inventory_hostname + '.pub') }}"
+        state: present
+      with_items: "{{ user }}"
+
     - name: Disable ssh password login
       lineinfile:
         dest: /etc/ssh/sshd_config
         regexp: "^PasswordAuthentication"
         line: "PasswordAuthentication no"
         state: present
+    
 
   post_tasks:
     - name: Restart sshd

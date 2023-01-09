@@ -150,12 +150,12 @@ install() {
                     # Cleaning cached files
                     pacman -Scc --noconfirm
                     
-                    # Installing if sudo is installed
-                    elif [[ $(sudo pacman -S --noconfirm ${_installArray[@]}) ]]; then
-                    # Cleaning cached files
-                    sudo pacman -Scc --noconfirm
-                    
-                    # Try again as root
+                # Installing if sudo is installed
+                elif [[ $(sudo pacman -S --noconfirm ${_installArray[@]}) ]]; then
+                # Cleaning cached files
+                sudo pacman -Scc --noconfirm
+                
+                # Try again as root
                 else
                     echo "+ ${INFO} retry as root again"
                     return 43
@@ -172,11 +172,32 @@ install() {
                     # Cleaning cached files
                     apt-get clean -y
                     
-                    # Installing if sudo is installed
-                    elif [[ $(sudo apt-get install ${_installArray[@]} -y) ]]; then
+                # Installing if sudo is installed
+                elif [[ $(sudo apt-get install ${_installArray[@]} -y) ]]; then
+                # Cleaning cached files
+                sudo apt-get clean -y
+                
+                # Try again as root
+                else
+                    echo "+ ${INFO} retry as root again"
+                    return 43
+                fi
+                
+                echo -e "+ [${TICK}] All dependencies are now installed"
+            fi
+        ;;
+        'fedora')
+            if [[ ${_installArray[@]} ]]; then
+                # Installing Packages if the script was started as root
+                if [[ $(dnf install ${_installArray[@]} -y) ]]; then
                     # Cleaning cached files
-                    sudo apt-get clean -y
+                    dnf clean all
                     
+                # Installing if sudo is installed
+                elif [[ $(sudo dnf install ${_installArray[@]} -y) ]]; then
+                # Cleaning cached files
+                dnf clean all
+                
                     # Try again as root
                 else
                     echo "+ ${INFO} retry as root again"

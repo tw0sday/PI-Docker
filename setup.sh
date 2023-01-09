@@ -33,7 +33,7 @@ readonly __ROOT="$(cd "$(dirname "${__DIR}")" && pwd)" # homedir
 
 # DEPENDENCY / LOGS VARIABLES
 # GINAvbs has currently one dependency that needs to be installed
-readonly __GINA_DEPS=(python3)
+readonly __GINA_DEPS=(python3 python3-pip)
 # Location of installation logs
 readonly __GINA_LOGS="${__DIR}/install.log"
 

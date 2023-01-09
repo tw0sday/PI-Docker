@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+
+  tasks:
+    - name: Generate an OpenSSH keypair for remote user (ssh-ed25519)
+      openssh_keypair:
+        path: ~/.ssh/id_ssh-ed25519-{{ item }}-{{ inventory_hostname }}
+        type: ed25519
+      with_items: "{{ user }}"

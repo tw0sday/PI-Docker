@@ -274,7 +274,7 @@ main(){
     _hostsArray=(${_hosts//,/ })
     
     python3 -m ansible playbook -i , -e "hosts=${_hosts}" playbooks/local_setup.yml
-    
+
     export ANSIBLE_HOST_KEY_CHECKING=False
     
     #for i in "${_hostsArray[@]}"; do
